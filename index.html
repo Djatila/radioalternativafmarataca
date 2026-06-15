@@ -860,10 +860,32 @@
                 navigator.serviceWorker.register('./sw.js')
                     .then(registration => {
                         console.log('ServiceWorker registration successful with scope: ', registration.scope);
+
+                        // Verifica se há atualizações no servidor assim que o app é aberto
+                        registration.update();
+
+                        // Verifica periodicamente por atualizações a cada 1 minuto enquanto o app estiver aberto
+                        setInterval(() => {
+                            registration.update();
+                        }, 60000);
+
+                        // Verifica por atualizações quando o usuário volta a focar na aba/app
+                        window.addEventListener('focus', () => {
+                            registration.update();
+                        });
                     })
                     .catch(err => {
                         console.log('ServiceWorker registration failed: ', err);
                     });
+            });
+
+            // Recarrega a página automaticamente quando um novo service worker toma o controle
+            let refreshing = false;
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (!refreshing) {
+                    refreshing = true;
+                    window.location.reload();
+                }
             });
         }
     </script>

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'radio-alternativa-v2';
+const CACHE_NAME = 'radio-alternativa-v3';
 const ASSETS = [
     './index.html',
     './manifest.json',
@@ -21,7 +21,7 @@ self.addEventListener('activate', (event) => {
             return Promise.all(
                 keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
             );
-        })
+        }).then(() => self.clients.claim())
     );
 });
 
