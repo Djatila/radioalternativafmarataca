@@ -1,6 +1,6 @@
 const CACHE_NAME = 'radio-alternativa-v1';
 const ASSETS = [
-    './radio_vozdacity (1).html',
+    './index.html',
     './manifest.json',
     './icon.svg'
 ];

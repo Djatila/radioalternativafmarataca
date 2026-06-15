@@ -1,7 +1,7 @@
 {
   "name": "Rádio Alternativa",
   "short_name": "Rádio Alt",
-  "start_url": "./radio_vozdacity (1).html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0a0a0a",
   "theme_color": "#ff0080",

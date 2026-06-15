@@ -725,24 +725,28 @@
             audio.volume = this.value / 100;
         });
 
-        // Função de saudação automática baseada no horário
-        function updateGreeting() {
+        // Função de atualização automática do show no ar com base no horário
+        function updateCurrentShow() {
             const agora = new Date();
             const hora = agora.getHours();
             
-            let saudacao = "";
-            let subTexto = "Rádio Alternativa FM"; // Você pode mudar essa frase se quiser
+            let showTitle = "";
+            let showArtist = "Rádio Alternativa FM";
 
-            if (hora >= 0 && hora < 12) {
-                saudacao = "Bom dia!";
-            } else if (hora >= 12 && hora < 18) {
-                saudacao = "Boa tarde!";
+            if (hora >= 6 && hora < 10) {
+                showTitle = "Paradão Sertanejo";
+            } else if (hora >= 10 && hora < 14) {
+                showTitle = "Urban Mix";
+            } else if (hora >= 14 && hora < 18) {
+                showTitle = "Afternoon Vibes";
+            } else if (hora >= 18 && hora < 22) {
+                showTitle = "Drive Time";
             } else {
-                saudacao = "Boa noite!";
+                showTitle = "Night Sessions";
             }
 
-            document.getElementById('currentTrack').textContent = saudacao;
-            document.getElementById('currentArtist').textContent = subTexto;
+            document.getElementById('currentTrack').textContent = showTitle;
+            document.getElementById('currentArtist').textContent = showArtist;
         }
 
         // Chat functionality
@@ -781,104 +785,15 @@
             }
         }
 
-        // Atualiza a saudação a cada 1 minuto para não atrasar a virada de turno
-        setInterval(updateGreeting, 60000);
+        // Atualiza a programação a cada 1 minuto
+        setInterval(updateCurrentShow, 60000);
 
         // Initialize
         audio.volume = 0.75;
-        updateGreeting();
+        updateCurrentShow();
         createParticles();
     </script>
 
-    <script>
-        let isPlaying = false;
-        const audio = document.getElementById('radioStream');
-        const playButton = document.getElementById('playButton');
-        const playIcon = document.getElementById('playIcon');
-        const volumeControl = document.getElementById('volumeControl');
-
-        // Urban track names for demo
-        const urbanTracks = [
-            { title: "Beat the City", artist: "Urban Vibes" },
-            { title: "Neon Nights", artist: "Cyber Flow" },
-            { title: "Street Dreams", artist: "Metro Beats" },
-            { title: "Electric Soul", artist: "Future Sound" },
-            { title: "City Lights", artist: "Underground" },
-            { title: "Digital Love", artist: "Synthwave" }
-        ];
-
-        function toggleRadio() {
-            if (isPlaying) {
-                audio.pause();
-                playIcon.className = 'fas fa-play';
-                isPlaying = false;
-            } else {
-                audio.play().catch(e => {
-                    console.log('Stream error:', e);
-                    alert('Não foi possível conectar ao stream. Verifique sua conexão.');
-                });
-                playIcon.className = 'fas fa-pause';
-                isPlaying = true;
-            }
-        }
-
-        // Volume control
-        volumeControl.addEventListener('input', function() {
-            audio.volume = this.value / 100;
-        });
-
-        // Update track info
-        function updateTrackInfo() {
-            const randomTrack = urbanTracks[Math.floor(Math.random() * urbanTracks.length)];
-            document.getElementById('currentTrack').textContent = randomTrack.title;
-            document.getElementById('currentArtist').textContent = randomTrack.artist;
-        }
-
-        // Chat functionality
-        function sendChatMessage() {
-            const input = document.getElementById('messageInput');
-            const message = input.value.trim();
-            
-            if (message) {
-                const chatWindow = document.getElementById('chatWindow');
-                const messageDiv = document.createElement('div');
-                messageDiv.className = 'chat-message';
-                messageDiv.innerHTML = `<span class="username">Você:</span> ${message}`;
-                chatWindow.appendChild(messageDiv);
-                chatWindow.scrollTop = chatWindow.scrollHeight;
-                input.value = '';
-            }
-        }
-
-        // Enter key for chat
-        document.getElementById('messageInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendChatMessage();
-            }
-        });
-
-        // Create floating particles
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            for (let i = 0; i < 20; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + 'vw';
-                particle.style.animationDelay = Math.random() * 6 + 's';
-                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
-                particlesContainer.appendChild(particle);
-            }
-        }
-
-        // Auto-update track every 4 minutes
-        setInterval(updateTrackInfo, 240000);
-
-        // Initialize
-        audio.volume = 0.75;
-        updateTrackInfo();
-        createParticles();
-    </script>
-    
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
