@@ -123,6 +123,34 @@
             text-transform: uppercase;
         }
 
+        .install-btn {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(0, 255, 255, 0.15);
+            border: 2px solid #00ffff;
+            border-radius: 25px;
+            padding: 8px 20px;
+            margin-top: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #00ffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+        }
+
+        .install-btn i {
+            margin-right: 8px;
+        }
+
+        .install-btn:hover {
+            background: #00ffff;
+            color: #0a0a0a;
+            box-shadow: 0 0 25px #00ffff;
+            transform: translateY(-2px);
+        }
+
         .pulse-dot {
             width: 12px;
             height: 12px;
@@ -529,6 +557,9 @@
                 <div class="pulse-dot"></div>
                 AO VIVO 24/7
             </div>
+            <button id="installApp" class="install-btn" style="display: none;">
+                <i class="fas fa-download"></i> Instalar Aplicativo
+            </button>
         </header>
 
         <!-- Main Player -->
@@ -792,6 +823,35 @@
         audio.volume = 0.75;
         updateCurrentShow();
         createParticles();
+
+        // PWA Install Prompt
+        let deferredPrompt;
+        const installBtn = document.getElementById('installApp');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'inline-flex';
+        });
+
+        installBtn.addEventListener('click', () => {
+            if (!deferredPrompt) return;
+            installBtn.style.display = 'none';
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted the install prompt');
+                } else {
+                    console.log('User dismissed the install prompt');
+                }
+                deferredPrompt = null;
+            });
+        });
+
+        window.addEventListener('appinstalled', () => {
+            console.log('App was successfully installed');
+            installBtn.style.display = 'none';
+        });
     </script>
 
     <script>

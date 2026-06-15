@@ -1,8 +1,10 @@
-const CACHE_NAME = 'radio-alternativa-v1';
+const CACHE_NAME = 'radio-alternativa-v2';
 const ASSETS = [
     './index.html',
     './manifest.json',
-    './icon.svg'
+    './icon.svg',
+    './icon-192.png',
+    './icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {
